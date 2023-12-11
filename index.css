@@ -1,6 +1,9 @@
 body
 {
    background-image: linear-gradient(red, yellow);
+   background-repeat: no-repeat;
+   background-attachment: fixed;
+   background-size: cover;
    color: #000000;
    font-family: Arial;
    font-weight: normal;
