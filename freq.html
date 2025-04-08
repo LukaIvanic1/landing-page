@@ -4,8 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Number Frequency Counter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .output {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
+    <h1>Number Frequency Counter</h1>
+    <p>Enter numbers in the URL with the parameter <code>?input=</code> to see their frequency count.</p>
+
+    <div class="output" id="output"></div>
+
     <script>
         // Function to get the URL parameter value
         function getUrlParameter(name) {
@@ -28,20 +42,25 @@
             return frequency;
         }
 
+        // Function to display the result
+        function displayFrequency(frequency) {
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = ''; // Clear any previous output
+
+            // Format and display the frequency result
+            for (const [key, value] of Object.entries(frequency)) {
+                outputDiv.innerHTML += `<p>${key} - ${value}</p>`;
+            }
+        }
+
         // Get input from URL
         const input = getUrlParameter('input');
 
         if (input) {
             const frequency = countFrequency(input);
-
-            // Convert frequency object to JSON format
-            const jsonResponse = JSON.stringify(frequency);
-
-            // Send the response as JSON
-            document.body.innerHTML = jsonResponse;
+            displayFrequency(frequency);
         } else {
-            // Return a simple error message if input is not found
-            document.body.innerHTML = JSON.stringify({ error: 'No input parameter found in the URL.' });
+            document.getElementById('output').innerHTML = '<p>No input found in the URL. Please add the input parameter in the URL like ?input=1 1 23 4 4 23 5.</p>';
         }
     </script>
 </body>
