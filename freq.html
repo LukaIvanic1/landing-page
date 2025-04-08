@@ -9,15 +9,9 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
-        .output {
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
-   
-    <div class="output" id="output"></div>
-
     <script>
         // Function to get the URL parameter value
         function getUrlParameter(name) {
@@ -40,15 +34,17 @@
             return frequency;
         }
 
-        // Function to display the result
-        function displayFrequency(frequency) {
-            const outputDiv = document.getElementById('output');
-            outputDiv.innerHTML = ''; // Clear any previous output
+        // Function to create and trigger download of a .txt file
+        function downloadTextFile(frequency) {
+            const outputText = Object.entries(frequency)
+                .map(([key, value]) => `${key} - ${value}`)
+                .join('\n');  // Join entries with newlines for text format
 
-            // Format and display the frequency result
-            for (const [key, value] of Object.entries(frequency)) {
-                outputDiv.innerHTML += `<p>${key} - ${value}</p>`;
-            }
+            const blob = new Blob([outputText], { type: 'text/plain' });  // Create Blob with the text content
+            const link = document.createElement('a');  // Create a link element
+            link.href = URL.createObjectURL(blob);  // Create a downloadable object URL
+            link.download = 'frequency_results.txt';  // Name of the file to be downloaded
+            link.click();  // Simulate a click to trigger the download
         }
 
         // Get input from URL
@@ -56,9 +52,9 @@
 
         if (input) {
             const frequency = countFrequency(input);
-            displayFrequency(frequency);
+            downloadTextFile(frequency);  // Download the frequency result as a text file
         } else {
-            document.getElementById('output').innerHTML = '<p>No input found in the URL. Please add the input parameter in the URL like ?input=1 1 23 4 4 23 5.</p>';
+            document.body.innerHTML = '<p>No input found in the URL. Please add the input parameter in the URL like ?input=1 1 23 4 4 23 5.</p>';
         }
     </script>
 </body>
