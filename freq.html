@@ -10,53 +10,59 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
-        .result {
+        .output {
             margin-top: 20px;
         }
     </style>
 </head>
 <body>
-
     <h1>Number Frequency Counter</h1>
-    <p>Enter a string of numbers separated by spaces:</p>
-    
-    <input type="text" id="inputString" placeholder="e.g., 1 1 2 3 3 3 4">
-    <button onclick="sendRequest()">Calculate Frequencies</button>
-    
-    <div class="result" id="result"></div>
+    <p>Enter numbers in the URL with the parameter <code>?input=</code> to see their frequency count.</p>
+
+    <div class="output" id="output"></div>
 
     <script>
-        async function sendRequest() {
-            const inputString = document.getElementById('inputString').value.trim();
-            
-            const data = { input_string: inputString };
-            
-            try {
-                const response = await fetch('https://your-website.com/frequency_calculator', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
+        // Function to get the URL parameter value
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
 
-                const result = await response.json(); 
+        // Function to count the frequency of numbers
+        function countFrequency(numbers) {
+            const frequency = {};
 
-                
-                let resultText = '';
-                for (let number in result) {
-                    resultText += `${number} - ${result[number]}<br>`;
-                }
+            // Split the input into individual numbers
+            const numArray = numbers.split(/\s+/); // Split by any whitespace
 
-              
-                document.getElementById('result').innerHTML = resultText;
+            // Count frequency of each number
+            numArray.forEach(num => {
+                frequency[num] = (frequency[num] || 0) + 1;
+            });
 
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById('result').innerHTML = "An error occurred. Please try again.";
+            return frequency;
+        }
+
+        // Function to display the result
+        function displayFrequency(frequency) {
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = ''; // Clear any previous output
+
+            // Format and display the frequency result
+            for (const [key, value] of Object.entries(frequency)) {
+                outputDiv.innerHTML += `<p>${key} - ${value}</p>`;
             }
         }
-    </script>
 
+        // Get input from URL
+        const input = getUrlParameter('input');
+
+        if (input) {
+            const frequency = countFrequency(input);
+            displayFrequency(frequency);
+        } else {
+            document.getElementById('output').innerHTML = '<p>No input found in the URL. Please add the input parameter in the URL like ?input=1 1 23 4 4 23 5.</p>';
+        }
+    </script>
 </body>
 </html>
