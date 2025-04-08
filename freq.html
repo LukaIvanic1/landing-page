@@ -1,0 +1,65 @@
+//cijeli razlog za ovaj page je da ne moram se baviti sa frequency mapom koristeci zuziceve blokove u mitu, ako znas znas.
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Frequency Counter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Number Frequency Counter</h1>
+    <p>Enter a string of numbers separated by spaces:</p>
+    
+    <input type="text" id="inputString" placeholder="e.g., 1 1 2 3 3 3 4">
+    <button onclick="calculateFrequency()">Calculate Frequencies</button>
+    
+    <div class="result" id="result"></div>
+
+    <script>
+        function getQueryParameter(name) {
+            let urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        function calculateFrequency() {
+            
+            let inputString = getQueryParameter('input_string') || document.getElementById('inputString').value.trim();
+
+          
+            let numbers = inputString.split(/\s+/);
+
+            
+            let frequency = {};
+            numbers.forEach(number => {
+                frequency[number] = (frequency[number] || 0) + 1;
+            });
+
+           
+            let result = '';
+            for (let number in frequency) {
+                result += `${number} - ${frequency[number]}<br>`;
+            }
+
+            
+            document.getElementById('result').innerHTML = result;
+        }
+        window.onload = function() {
+            if (getQueryParameter('input_string')) {
+                calculateFrequency();
+            }
+        }
+    </script>
+
+</body>
+</html>
