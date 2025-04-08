@@ -1,5 +1,4 @@
 //cijeli razlog za ovaj page je da ne moram se baviti sa frequency mapom koristeci zuziceve blokove u mitu, ako znas znas.
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,41 +21,39 @@
     <p>Enter a string of numbers separated by spaces:</p>
     
     <input type="text" id="inputString" placeholder="e.g., 1 1 2 3 3 3 4">
-    <button onclick="calculateFrequency()">Calculate Frequencies</button>
+    <button onclick="sendRequest()">Calculate Frequencies</button>
     
     <div class="result" id="result"></div>
 
     <script>
-        function getQueryParameter(name) {
-            let urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(name);
-        }
-
-        function calculateFrequency() {
+        async function sendRequest() {
+            const inputString = document.getElementById('inputString').value.trim();
             
-            let inputString = getQueryParameter('input_string') || document.getElementById('inputString').value.trim();
-
-          
-            let numbers = inputString.split(/\s+/);
-
+            const data = { input_string: inputString };
             
-            let frequency = {};
-            numbers.forEach(number => {
-                frequency[number] = (frequency[number] || 0) + 1;
-            });
+            try {
+                const response = await fetch('https://your-website.com/frequency_calculator', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
 
-           
-            let result = '';
-            for (let number in frequency) {
-                result += `${number} - ${frequency[number]}<br>`;
-            }
+                const result = await response.json(); 
 
-            
-            document.getElementById('result').innerHTML = result;
-        }
-        window.onload = function() {
-            if (getQueryParameter('input_string')) {
-                calculateFrequency();
+                
+                let resultText = '';
+                for (let number in result) {
+                    resultText += `${number} - ${result[number]}<br>`;
+                }
+
+              
+                document.getElementById('result').innerHTML = resultText;
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('result').innerHTML = "An error occurred. Please try again.";
             }
         }
     </script>
