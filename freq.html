@@ -8,6 +8,7 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            white-space: pre-wrap; /* Makes sure text wraps correctly in the browser */
         }
     </style>
 </head>
@@ -34,17 +35,12 @@
             return frequency;
         }
 
-        // Function to create and trigger download of a .txt file
-        function downloadTextFile(frequency) {
+        // Function to overwrite the body with the frequency output as plain text
+        function overwriteWithPlainText(frequency) {
             const outputText = Object.entries(frequency)
                 .map(([key, value]) => `${key} - ${value}`)
-                .join('\n');  // Join entries with newlines for text format
-
-            const blob = new Blob([outputText], { type: 'text/plain' });  // Create Blob with the text content
-            const link = document.createElement('a');  // Create a link element
-            link.href = URL.createObjectURL(blob);  // Create a downloadable object URL
-            link.download = 'frequency_results.txt';  // Name of the file to be downloaded
-            link.click();  // Simulate a click to trigger the download
+                .join('\n');
+            document.body.innerHTML = '<pre>' + outputText + '</pre>'; // Display output in a plain-text format
         }
 
         // Get input from URL
@@ -52,7 +48,7 @@
 
         if (input) {
             const frequency = countFrequency(input);
-            downloadTextFile(frequency);  // Download the frequency result as a text file
+            overwriteWithPlainText(frequency); // Overwrite page with the result in plain text
         } else {
             document.body.innerHTML = '<p>No input found in the URL. Please add the input parameter in the URL like ?input=1 1 23 4 4 23 5.</p>';
         }
