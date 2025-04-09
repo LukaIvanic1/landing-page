@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Number Frequency Counter</title>
+    <title>Integer Frequency Counter</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            white-space: pre-wrap; /* Makes sure text wraps correctly in the browser */
+            white-space: pre-wrap;
         }
     </style>
 </head>
@@ -50,7 +50,7 @@
             const frequency = countFrequency(input);
             overwriteWithPlainText(frequency); // Overwrite page with the result in plain text
         } else {
-            document.body.innerHTML = '<p>No input found in the URL. Please add the input parameter in the URL like ?input=1 1 23 4 4 23 5.</p>';
+            document.body.innerHTML = '<p>No input found in URL. Input format: ?input=1 2 3</p>';
         }
     </script>
 </body>
