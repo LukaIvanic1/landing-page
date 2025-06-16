@@ -1,44 +1,22 @@
-<!doctype html>
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>LOL</title>
-    
-    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
     <link href="index.css" rel="stylesheet">
 </head>
-
 <body>
-    <p style="font-size: 10">formerly*</p>
-    <a id="Button1" href="https://raspored.040705.xyz"
-        style="position:absolute;left:77px;top:143px;width:274px;height:86px;z-index:1;">Raspored</a>
-    <a id="Button2" href="/raspored.html"
-        style="position:absolute;left:77px;top:308px;width:274px;height:86px;z-index:2;">Raspored Faks</a>
-    <a id="Button3"  href="/freq.html"
-        style="position:absolute;left:77px;top:473px;width:274px;height:86px;z-index:3;">Frequency Counter</a>
-    <a id="Button4" href="https://weather.040705.xyz"
-        style="position:absolute;left:491px;top:143px;width:274px;height:86px;z-index:4;">Weather</a>
-    <input type="submit" id="Button5" name="" value="tba"
-        style="position:absolute;left:491px;top:308px;width:274px;height:86px;z-index:5;">
-    <input type="submit" id="Button6" name="" value="tba"
-        style="position:absolute;left:491px;top:473px;width:274px;height:86px;z-index:6;">
-    <input type="submit" id="Button7" name="" value="tba"
-        style="position:absolute;left:984px;top:143px;width:274px;height:86px;z-index:7;">
-    <a id="Button8" href="https://miho.040705.xyz"
-        style="position:absolute;left:984px;top:308px;width:274px;height:86px;z-index:8;">Miho site</a>
-        
-    <input type="submit" id="Button9" name="" value="tba"
-        style="position:absolute;left:984px;top:473px;width:274px;height:86px;z-index:9;">
-    <div id="wb_TextArt1" style="position:absolute;left:118px;top:22px;width:1151px;height:100px;z-index:10;">
-        <img src="images/img0001.png" id="TextArt1" alt="jebemise dot monster" title="jebemise dot monster" width="1151"
-            height="100" style="width:1151px;height:100px;">
-    </div>
-    <div id="wb_MediaPlayer1" style="position:absolute;left:1303px;top:466px;width:100px;height:100px;z-index:11;">
-        <audio id="MediaPlayer1" autoplay="true" controls loop>
-            <source src="Shepard Tone.mp3" type="audio/mpeg">
-        </audio>
+    <div class="button-grid">
+        <a href="https://raspored.040705.xyz" class="button active-button purple">RASPORED</a>
+        <a href="/raspored.html" class="button active-button blue">RASPORED FAKS</a>
+        <a href="/freq.html" class="button active-button green">FREQUENCY COUNTER</a>
+        <a href="https://weather.040705.xyz" class="button active-button yellow">WEATHER</a>
+        <a href="/clock.html" class="button active-button brown">CLOCK</a>
+        <a href="/games.html" class="button active-button cyan">GAMES</a>
+        <button class="button tba-button" disabled>TBA</button>
+        <button class="button tba-button" disabled>TBA</button>
+        <button class="button tba-button" disabled>TBA</button>
     </div>
 </body>
-
 </html>

@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clock</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #f0f0f0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0) 70%);
+            z-index: -1;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(30, 30, 46, 0.85);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(100, 100, 150, 0.3);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #ff7e5f, #feb47b, #ff7e5f);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #f5f7fa, #c3cfe2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            color: #a0a0c0;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .clock-container {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(25, 25, 40, 0.6);
+            border-radius: 15px;
+            border: 1px solid rgba(100, 100, 150, 0.2);
+        }
+
+        .date-display {
+            font-size: 1.4rem;
+            color: #b0b0d0;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .time-display {
+            font-size: 5rem;
+            font-weight: 300;
+            letter-spacing: 4px;
+            margin: 20px 0;
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+            background: linear-gradient(90deg, #ffffff, #e0e0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .year-display {
+            font-size: 1.4rem;
+            color: #8888aa;
+            margin-bottom: 10px;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(35, 35, 55, 0.7);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(100, 100, 150, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: #c3c3e6;
+        }
+
+        .card-title .emoji {
+            margin-right: 12px;
+            font-size: 1.8rem;
+        }
+
+        .card-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(100, 100, 150, 0.2);
+        }
+
+        .info-label {
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+            color: #a0a0c0;
+        }
+
+        .info-label .emoji {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+
+        .info-value {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #e0e0ff;
+        }
+
+        .moon-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .moon-phase {
+            font-size: 4rem;
+            margin: 15px 0;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
+        }
+
+        .moon-name {
+            font-size: 1.3rem;
+            color: #d0d0f0;
+            text-align: center;
+        }
+
+        .progress-container {
+            background: rgba(25, 25, 40, 0.6);
+            border-radius: 15px;
+            padding: 25px 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(100, 100, 150, 0.2);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            color: #b0b0d0;
+            font-size: 1.2rem;
+        }
+
+        .day-night-progress {
+            height: 40px;
+            background: #1a1a2e;
+            border-radius: 20px;
+            position: relative;
+            overflow: visible;
+            margin: 30px 0;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .progress-bar {
+            height: 100%;
+            position: relative;
+            left: 0;
+            top: 0;
+            background: linear-gradient(90deg, #4b6cb7, #182848);
+            border-radius: 20px;
+            transition: width 1s ease, background 1s ease;
+            z-index: 1;
+        }
+
+        .progress-indicator {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.8rem;
+            z-index: 2;
+            pointer-events: none;
+            filter: drop-shadow(0 0 5px rgba(255, 223, 0, 0.7));
+            transition: left 1s ease;
+        }
+
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 1.2rem;
+            color: #8888aa;
+        }
+
+        .progress-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .label-emoji {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .location-info {
+            text-align: center;
+            padding: 15px;
+            background: rgba(25, 25, 40, 0.6);
+            border-radius: 15px;
+            margin-top: 20px;
+            font-size: 1.1rem;
+            color: #a0a0c0;
+            border: 1px solid rgba(100, 100, 150, 0.2);
+        }
+
+        .location-info span {
+            color: #d0d0f0;
+            font-weight: 500;
+        }
+
+        .dashboard-link {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            color: #64b5f6;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+            padding: 12px 25px;
+            background: rgba(30, 45, 70, 0.6);
+            border-radius: 30px;
+            width: fit-content;
+            margin: 30px auto 0;
+            border: 1px solid rgba(100, 149, 237, 0.3);
+        }
+
+        .dashboard-link:hover {
+            color: #90caf9;
+            background: rgba(40, 55, 90, 0.7);
+            text-decoration: none;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #8888aa;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .time-display {
+                font-size: 3.5rem;
+            }
+
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .time-display {
+                font-size: 2.8rem;
+            }
+
+            .container {
+                padding: 20px 15px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Clock</h1>
+        </div>
+
+        <div class="clock-container">
+            <div class="date-display" id="dateDisplay">Tuesday, June 17, 2025</div>
+            <div class="time-display" id="timeDisplay">00:00:00</div>
+            <div class="year-display" id="yearDisplay">2025</div>
+        </div>
+
+        <div class="dashboard">
+            <div class="card">
+                <h2 class="card-title"><span class="emoji">🌞</span> Sun Cycle</h2>
+                <div class="card-content">
+                    <div class="info-row">
+                        <div class="info-label"><span class="emoji">🌅</span> Sunrise</div>
+                        <div class="info-value" id="sunriseDisplay">06:23 AM</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label"><span class="emoji">🌇</span> Sunset</div>
+                        <div class="info-value" id="sunsetDisplay">08:45 PM</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label"><span class="emoji">⏱️</span> Daylight Duration</div>
+                        <div class="info-value" id="daylightDisplay">14h 22m</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title"><span class="emoji">🌙</span> Moon Phase</h2>
+                <div class="moon-container">
+                    <div class="moon-phase" id="moonEmoji">🌓</div>
+                    <div class="moon-name" id="moonName">First Quarter</div>
+                </div>
+                <div class="card-content">
+                    <div class="info-row">
+                        <div class="info-label"><span class="emoji">🌕</span> Next Full Moon</div>
+                        <div class="info-value" id="nextFullMoon">June 25</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-header">
+                <span>Day/Night Progress</span>
+                <span id="progressTime">12:00 PM</span>
+            </div>
+
+            <div class="day-night-progress">
+                <div class="progress-bar" id="progressBar" style="width: 50%"></div>
+                <div class="progress-indicator" id="progressIndicator" style="left: 50%">☀️</div>
+            </div>
+
+            <div class="progress-labels">
+                <div class="progress-label">
+                    <div class="label-emoji">🌇</div>
+                    <div id="sunsetLabel">Sunset</div>
+                </div>
+                <div class="progress-label">
+                    <div class="label-emoji">🌅</div>
+                    <div id="sunriseLabel">Sunrise</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="location-info">
+            Your location: <span id="locationDisplay">Detecting...</span>
+        </div>
+
+    </div>
+
+    <script>
+        // Global variables
+        let userLocation = null;
+        let locationName = "Detecting...";
+        let sunriseTime = null;
+        let sunsetTime = null;
+
+        // Moon phases data
+        const moonPhases = [
+            { emoji: "🌑", name: "New Moon", nextFull: 14.77 },
+            { emoji: "🌒", name: "Waxing Crescent", nextFull: 13.77 },
+            { emoji: "🌓", name: "First Quarter", nextFull: 10.77 },
+            { emoji: "🌔", name: "Waxing Gibbous", nextFull: 7.77 },
+            { emoji: "🌕", name: "Full Moon", nextFull: 29.53 },
+            { emoji: "🌖", name: "Waning Gibbous", nextFull: 7.77 },
+            { emoji: "🌗", name: "Last Quarter", nextFull: 10.77 },
+            { emoji: "🌘", name: "Waning Crescent", nextFull: 13.77 }
+        ];
+
+        // Initialize the app
+        function initApp() {
+            // Start the clock
+            updateClock();
+            setInterval(updateClock, 1000);
+
+            // Get user location
+            getUserLocation();
+        }
+
+        // Get user location
+        function getUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    position => {
+                        userLocation = {
+                            lat: position.coords.latitude,
+                            lon: position.coords.longitude
+                        };
+                        getLocationName(userLocation.lat, userLocation.lon);
+                        calculateSunTimes();
+                    },
+                    error => {
+                        console.error("Geolocation error:", error);
+                        // Default to London if location access denied
+                        userLocation = { lat: 51.5074, lon: -0.1278 };
+                        locationName = "London, UK (default)";
+                        document.getElementById("locationDisplay").textContent = locationName;
+                        calculateSunTimes();
+                    }
+                );
+            } else {
+                console.log("Geolocation not supported");
+                // Default to London
+                userLocation = { lat: 51.5074, lon: -0.1278 };
+                locationName = "London, UK (not supported)";
+                document.getElementById("locationDisplay").textContent = locationName;
+                calculateSunTimes();
+            }
+        }
+
+        // Get location name from coordinates
+        function getLocationName(lat, lon) {
+            // Using OpenStreetMap Nominatim API
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.address) {
+                        if (data.address.city) {
+                            locationName = data.address.city + ", " + (data.address.country || "");
+                        } else if (data.address.town) {
+                            locationName = data.address.town + ", " + (data.address.country || "");
+                        } else {
+                            locationName = data.display_name.split(",")[0] + ", " + (data.address.country || "");
+                        }
+                        document.getElementById("locationDisplay").textContent = locationName;
+                    }
+                })
+                .catch(error => {
+                    console.error("Location name error:", error);
+                    locationName = `Lat: ${lat.toFixed(4)}, Lon: ${lon.toFixed(4)}`;
+                    document.getElementById("locationDisplay").textContent = locationName;
+                });
+        }
+
+        // Calculate sunrise and sunset times
+        function calculateSunTimes() {
+            if (!userLocation) return;
+
+            const now = new Date();
+            const times = SunCalc.getTimes(now, userLocation.lat, userLocation.lon);
+
+            sunriseTime = times.sunrise;
+            sunsetTime = times.sunset;
+
+            // Update UI
+            document.getElementById("sunriseDisplay").textContent = formatTime(sunriseTime);
+            document.getElementById("sunsetDisplay").textContent = formatTime(sunsetTime);
+
+            // Calculate daylight duration
+            const daylightMs = sunsetTime - sunriseTime;
+            const daylightHours = Math.floor(daylightMs / 3600000);
+            const daylightMinutes = Math.floor((daylightMs % 3600000) / 60000);
+            document.getElementById("daylightDisplay").textContent = `${daylightHours}h ${daylightMinutes}m`;
+
+            // Update moon phase
+            updateMoonPhase(now);
+        }
+
+        // Update moon phase information
+        function updateMoonPhase(date) {
+            const moonIllumination = SunCalc.getMoonIllumination(date);
+            const phase = moonIllumination.phase; // 0 to 1
+
+            // Determine moon phase index
+            let phaseIndex;
+            if (phase < 0.125) phaseIndex = 0;
+            else if (phase < 0.25) phaseIndex = 1;
+            else if (phase < 0.375) phaseIndex = 2;
+            else if (phase < 0.5) phaseIndex = 3;
+            else if (phase < 0.625) phaseIndex = 4;
+            else if (phase < 0.75) phaseIndex = 5;
+            else if (phase < 0.875) phaseIndex = 6;
+            else phaseIndex = 7;
+
+            // Update UI
+            document.getElementById("moonEmoji").textContent = moonPhases[phaseIndex].emoji;
+            document.getElementById("moonName").textContent = moonPhases[phaseIndex].name;
+
+            // Calculate next full moon
+            const daysToFull = moonPhases[phaseIndex].nextFull;
+            const nextFullMoonDate = new Date(date.getTime() + daysToFull * 24 * 60 * 60 * 1000);
+            document.getElementById("nextFullMoon").textContent =
+                nextFullMoonDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+        }
+
+        // Update clock in real-time
+        function updateClock() {
+            const now = new Date();
+
+            // Format time as HH:MM:SS
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('timeDisplay').textContent = `${hours}:${minutes}:${seconds}`;
+
+            // Update date
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('dateDisplay').textContent = now.toLocaleDateString('en-US', options);
+
+            // Update year
+            document.getElementById('yearDisplay').textContent = now.getFullYear();
+
+            // Update progress bar
+            updateProgressBar(now);
+
+            // Recalculate sun times every 10 minutes
+            if (now.getMinutes() % 10 === 0 && now.getSeconds() === 0) {
+                calculateSunTimes();
+            }
+        }
+
+        // Update day/night progress bar
+        function updateProgressBar(now) {
+            if (!sunriseTime || !sunsetTime) return;
+
+            const nowMillis = now.getTime();
+            const sunriseMillis = sunriseTime.getTime();
+            const sunsetMillis = sunsetTime.getTime();
+
+            // Calculate full 24-hour cycle
+            const nextSunrise = new Date(sunriseTime);
+            nextSunrise.setDate(nextSunrise.getDate() + 1);
+            const nextSunriseMillis = nextSunrise.getTime();
+
+            let progressPercent;
+            let indicatorEmoji = '☀️';
+            let isDaytime = true;
+
+            if (nowMillis < sunriseMillis) {
+                // Before sunrise (night - previous day)
+                const nightDuration = sunriseMillis - (sunriseMillis - 86400000);
+                const timeSincePreviousSunset = nowMillis - (sunriseMillis - 86400000);
+                progressPercent = (timeSincePreviousSunset / nightDuration) * 100;
+                indicatorEmoji = '🌙';
+                isDaytime = false;
+            } else if (nowMillis < sunsetMillis) {
+                // During the day
+                const dayDuration = sunsetMillis - sunriseMillis;
+                const timeSinceSunrise = nowMillis - sunriseMillis;
+                progressPercent = (timeSinceSunrise / dayDuration) * 100;
+            } else {
+                // After sunset (night)
+                const nightDuration = nextSunriseMillis - sunsetMillis;
+                const timeSinceSunset = nowMillis - sunsetMillis;
+                progressPercent = (timeSinceSunset / nightDuration) * 100;
+                indicatorEmoji = '🌙';
+                isDaytime = false;
+            }
+
+            // Update progress bar
+            document.getElementById('progressBar').style.width = `${progressPercent}%`;
+            document.getElementById('progressBar').style.background = isDaytime
+                ? 'linear-gradient(90deg, #4b6cb7, #182848)'
+                : 'linear-gradient(90deg, #0f2027, #203a43, #2c5364)';
+
+            document.getElementById('progressIndicator').style.left = `${progressPercent}%`;
+            document.getElementById('progressIndicator').textContent = indicatorEmoji;
+
+            // Update current time in progress header
+            document.getElementById('progressTime').textContent = formatTime(now);
+        }
+
+        // Format time as HH:MM AM/PM
+        function formatTime(date) {
+            return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // Initialize the app when page loads
+        window.onload = initApp;
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Games</title>
+    <link href="games.css" rel="stylesheet">
+</head>
+<body>
+    <div class="background-image"></div>
+    <div class="button-grid">
+        <a href="#" class="game-button polaroid">
+            <div class="game-image" style="background-image: url('asset.png')"></div>
+            <div class="game-title">Coming Soon</div>
+        </a>
+    </div>
+
+<script>
+    document.querySelectorAll('.game-button').forEach(button => {
+    button.addEventListener('mousemove', (e) => {
+        const rect = button.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const angleX = (y - centerY) / 20;
+        const angleY = (centerX - x) / 20;
+        
+        button.style.setProperty('--rotate-x', `${angleX}deg`);
+        button.style.setProperty('--rotate-y', `${angleY}deg`);
+    });
+    
+    button.addEventListener('mouseleave', () => {
+        button.style.setProperty('--rotate-x', '0deg');
+        button.style.setProperty('--rotate-y', '0deg');
+    });
+});
+</script>
+
+</body>
+</html>
