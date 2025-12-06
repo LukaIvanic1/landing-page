@@ -1,5 +1,5 @@
 // Default target date
-let targetDate = new Date('2025-12-19T21:00:00');
+let targetDate = new Date('2025-12-18T20:40:00');
 
 // Load from cookie if exists
 const savedDate = getCookie("countdownTarget");
@@ -77,3 +77,4 @@ saveBtn.addEventListener('click', () => {
 // Run countdown every second
 setInterval(updateCountdown, 1000);
 updateCountdown();
+
