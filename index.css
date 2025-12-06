@@ -68,7 +68,7 @@ body {
 .pink { background-color: #ffb6c1; }
 .cyan { background-color: #183e69; }
 .brown { background-color: #9c6c34; }
-
+.white { background-color: #ffffff; }
 /* Responsive design */
 @media (max-width: 768px) {
     .button-grid {
