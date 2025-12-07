@@ -4,7 +4,14 @@ let targetDate = new Date('2025-12-18T20:40:00');
 // Load from cookie if exists
 const savedDate = getCookie("countdownTarget");
 if (savedDate) {
-    targetDate = new Date(savedDate);
+    const parsedSaved = new Date(savedDate);
+    if (!isNaN(parsedSaved)) {
+        targetDate = parsedSaved;
+    } else {
+        console.warn('Invalid saved countdown date in cookie, clearing it:', savedDate);
+        // delete cookie
+        document.cookie = 'countdownTarget=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+    }
 }
 
 // Elements
@@ -15,9 +22,17 @@ const secondsEl = document.getElementById('seconds');
 const progressFill = document.getElementById('progressFill');
 const dateInput = document.getElementById('dateInput');
 const saveBtn = document.getElementById('saveBtn');
+const progressPercentEl = document.getElementById('progressPercent');
 
-// Set initial input value
-dateInput.value = targetDate.toISOString().slice(0,16);
+// Set initial input value if targetDate is valid
+if (!isNaN(targetDate)) {
+    // use local representation for datetime-local (no timezone indicator)
+    const tzOffset = targetDate.getTimezoneOffset() * 60000; // offset in ms
+    const localISO = new Date(targetDate - tzOffset).toISOString().slice(0,16);
+    dateInput.value = localISO;
+} else {
+    console.warn('targetDate is invalid:', targetDate);
+}
 
 // Countdown function
 function updateCountdown() {
@@ -67,6 +82,15 @@ function updateProgress(now) {
     }
 
     progressFill.style.width = percent + '%';
+    if (progressPercentEl) progressPercentEl.textContent = Math.round(percent) + '%';
+
+    console.debug('Progress debug:', {
+        startDate: startDate.toISOString(),
+        targetDate: isNaN(targetDate) ? targetDate : targetDate.toISOString(),
+        total,
+        elapsed,
+        percent
+    });
 }
 
 // Cookie helpers
