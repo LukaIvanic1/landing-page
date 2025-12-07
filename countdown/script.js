@@ -48,7 +48,24 @@ function updateProgress(now) {
     const startDate = new Date('2025-12-03T00:00:00');
     const total = targetDate - startDate;
     const elapsed = now - startDate;
-    let percent = Math.min((elapsed / total) * 100, 100);
+    // Handle edge cases where dates could make `total` zero/negative
+    // or `now` is before the `startDate`.
+    let percent = 0;
+    if (total > 0) {
+        if (elapsed <= 0) {
+            percent = 0;
+        } else {
+            percent = (elapsed / total) * 100;
+            if (!isFinite(percent) || isNaN(percent)) percent = 0;
+            percent = Math.min(Math.max(percent, 0), 100);
+        }
+    } else {
+        // If total is zero or negative, fall back to a sensible value:
+        // - if the target is already at-or-before the start, consider progress complete
+        // - otherwise, show 0% to avoid the bar stuck at full
+        percent = (targetDate <= startDate) ? 100 : 0;
+    }
+
     progressFill.style.width = percent + '%';
 }
 
