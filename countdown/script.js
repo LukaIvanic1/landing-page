@@ -82,7 +82,7 @@ function updateProgress(now) {
     }
 
     progressFill.style.width = percent + '%';
-    if (progressPercentEl) progressPercentEl.textContent = Math.round(percent) + '%';
+    if (progressPercentEl) progressPercentEl.textContent = formatPercent(percent) + '%';
 
     console.debug('Progress debug:', {
         startDate: startDate.toISOString(),
@@ -91,6 +91,11 @@ function updateProgress(now) {
         elapsed,
         percent
     });
+}
+
+function formatPercent(value) {
+  const v = Number(value);
+  return Number.isFinite(v) ? v.toFixed(5) : "0.00000";
 }
 
 // Cookie helpers
