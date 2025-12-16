@@ -3,11 +3,13 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Helvetica Neue', sans-serif;
+  /* removed fixed font-family to allow dynamic switching via CSS variable */
 }
 
 /* Background */
 body {
+  --app-font: 'Helvetica Neue', sans-serif; /* default font fallback */
+  font-family: var(--app-font);
   min-height: 100vh;
   display: flex;
   justify-content: center;
