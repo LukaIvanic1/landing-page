@@ -56,22 +56,28 @@
 
   </div>
 
-  <script src="three.r134.min.js"></script>
-  <script src="vanta.clouds.min.js"></script>
+  <!-- Load Three.js and Vanta from CDN and initialize VANTA safely -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.21/vanta.clouds.min.js"></script>
   <script>
-    // Initialize VANTA after resources are loaded and use a DOM element
+    // Initialize VANTA after resources are loaded, only if VANTA is available
     window.addEventListener('load', function () {
-      VANTA.CLOUDS({
-        el: document.body,
-        mouseControls: true,
-        touchControls: true,
-        gyroControls: false,
-        minHeight: 200.00,
-        minWidth: 200.00,
-        speed: 0.50
-      });
+      if (window.VANTA && typeof VANTA.CLOUDS === 'function') {
+        VANTA.CLOUDS({
+          el: document.body,
+          mouseControls: true,
+          touchControls: true,
+          gyroControls: false,
+          minHeight: 200.00,
+          minWidth: 200.00,
+          speed: 0.50
+        });
+      } else {
+        console.error('VANTA not available — check CDN/network or console for errors.');
+      }
     });
   </script>
+
   <script src="script.js"></script>
 </body>
 
