@@ -12,9 +12,16 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #1e1e2f, #121212);
+  
   color: #fff;
   padding: 20px;
+
+
+ 
+  margin: 0;
+
+  background: transparent;
+
 }
 
 /* Glass effect */
