@@ -79,8 +79,8 @@ footer { background: #111; color: #888; padding: 40px 10%; text-align: center; m
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-    .hamburger { display: inline-flex; flex-direction: column; gap: 6px; width: 36px; height: 28px; padding: 6px; border: none; background: transparent; cursor: pointer; align-items: center; justify-content: center; }
-    .hamburger span { display: block; height: 3px; width: 24px; background: var(--text-color); border-radius: 2px; }
+    .hamburger { display: inline-flex; flex-direction: column; gap: 8px; width: 56px; height: 44px; padding: 10px; border: none; background: transparent; cursor: pointer; align-items: center; justify-content: center; z-index: 1600; -webkit-tap-highlight-color: transparent; }
+    .hamburger span { display: block; height: 4px; width: 40px; background: var(--text-color); border-radius: 3px; }
 
     /* Hide desktop horizontal links; mobile menu will show them when nav.open */
     .nav-links { display: none; }
