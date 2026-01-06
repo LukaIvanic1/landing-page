@@ -39,6 +39,21 @@ document.addEventListener("DOMContentLoaded", function() {
     // Load Language
     const savedLang = localStorage.getItem('preferredLang') || 'hr';
     setLanguage(savedLang);
+
+    // Mobile hamburger toggle
+    const hamb = document.querySelector('.hamburger');
+    const navEl = document.querySelector('nav');
+    if(hamb && navEl) {
+        hamb.addEventListener('click', function() {
+            const isOpen = navEl.classList.toggle('open');
+            hamb.setAttribute('aria-expanded', String(!!isOpen));
+        });
+        // Close menu when a navigation link is clicked
+        document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', function(){
+            navEl.classList.remove('open');
+            hamb.setAttribute('aria-expanded','false');
+        }));
+    }
 });
 
 // 2. Language Logic
