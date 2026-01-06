@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koncertna udruga Gramophone</title>
+    <link rel="icon" type="image/jpeg" href="favicon.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <a href="index.html"><img src="images/logo.png" alt="Gramophone Logo"></a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html" data-key="nav_home">Home</a></li>
+            <li><a href="about.html" data-key="nav_about">About Us</a></li>
+            <li><a href="events.html" data-key="nav_events">Events</a></li>
+            <li><a href="gallery.html" data-key="nav_gallery">Gallery</a></li>
+            <li><a href="contact.html" data-key="nav_contact">Contact</a></li>
+        </ul>
+        <div class="lang-switch">
+            <span onclick="setLanguage('hr')" id="btn-hr">HR</span>
+            <span onclick="setLanguage('it')" id="btn-it">IT</span>
+            <span onclick="setLanguage('en')" id="btn-en">EN</span>
+        </div>
+    </nav>
+
+    <header>
+        <div class="video-overlay"></div>
+        <video autoplay muted loop playsinline class="back-video">
+            <source src="hero.mp4" type="video/mp4">
+        </video>
+        <div class="hero-content">
+            <h1 class="animate" data-key="hero_title">Harmony in Buje</h1>
+            <p class="animate delay-1" data-key="hero_subtitle">Where classical tradition meets the soul of Istria.</p>
+            <div class="animate delay-2">
+                <a href="events.html" class="btn btn-primary" data-key="btn_tickets">Upcoming Concerts</a>
+                <a href="about.html" class="btn btn-secondary" data-key="btn_mission">Our Story</a>
+            </div>
+        </div>
+    </header>
+
+    <script src="translation.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

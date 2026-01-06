@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Gramophone</title>
+    <link rel="icon" type="image/jpeg" href="favicon.jpg">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav>
+        <div class="logo"><a href="index.html"><img src="images/logo.png" alt="Logo"></a></div>
+        <ul class="nav-links">
+            <li><a href="index.html" data-key="nav_home">Home</a></li>
+            <li><a href="about.html" data-key="nav_about" class="active-page">About Us</a></li>
+            <li><a href="events.html" data-key="nav_events">Events</a></li>
+            <li><a href="gallery.html" data-key="nav_gallery">Gallery</a></li>
+            <li><a href="contact.html" data-key="nav_contact">Contact</a></li>
+        </ul>
+        <div class="lang-switch">
+            <span onclick="setLanguage('hr')" id="btn-hr">HR</span>
+            <span onclick="setLanguage('it')" id="btn-it">IT</span>
+            <span onclick="setLanguage('en')" id="btn-en">EN</span>
+        </div>
+    </nav>
+
+    <section class="page-content">
+        <h1 data-key="about_title">The Sound of Istria</h1>
+        <div class="text-block">
+            <p data-key="about_full_text_1">Here is the main text about the association...</p>
+            <br>
+            <p data-key="about_full_text_2">More text about the fusion of culture...</p>
+        </div>
+
+        <hr>
+
+        <h2 data-key="docs_title">Documents & Transparency</h2>
+        <div class="download-section">
+            <a href="statute.pdf" download class="btn btn-secondary" style="color:black; border-color:black;">Download Statute (PDF)</a>
+        </div>
+
+        <hr>
+
+        <h2 data-key="privacy_title">Privacy Policy</h2>
+        <p data-key="privacy_text" class="small-text">GDPR Compliance text goes here...</p>
+    </section>
+
+    <footer id="footer-placeholder"></footer>
+
+    <script src="translations.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

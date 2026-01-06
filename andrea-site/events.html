@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events | Gramophone</title>
+    <link rel="icon" type="image/jpeg" href="favicon.jpg">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav>
+        <div class="logo"><a href="index.html"><img src="images/logo.png" alt="Logo"></a></div>
+        <ul class="nav-links">
+            <li><a href="index.html" data-key="nav_home">Home</a></li>
+            <li><a href="about.html" data-key="nav_about">About Us</a></li>
+            <li><a href="events.html" data-key="nav_events" class="active-page">Events</a></li>
+            <li><a href="gallery.html" data-key="nav_gallery">Gallery</a></li>
+            <li><a href="contact.html" data-key="nav_contact">Contact</a></li>
+        </ul>
+        <div class="lang-switch">
+            <span onclick="setLanguage('hr')" id="btn-hr">HR</span>
+            <span onclick="setLanguage('it')" id="btn-it">IT</span>
+            <span onclick="setLanguage('en')" id="btn-en">EN</span>
+        </div>
+    </nav>
+
+    <section class="page-content events-bg">
+        <h1 data-key="events_title">Upcoming Season</h1>
+        
+        <div style="display:flex; gap:12px; align-items:center; margin-bottom:20px;">
+            <h2 style="flex:1;" data-key="events_title">Upcoming Season</h2>
+            <div>
+                <button id="btn-add-concert" class="btn btn-secondary admin-only">Add Concert</button>
+                <button id="btn-admin" class="btn">Admin</button>
+                <button id="btn-logout" class="btn" style="display:none;">Logout</button>
+            </div>
+        </div>
+
+        <div id="events-list"></div>
+
+        <div class="archive-section">
+            <h2 data-key="archive_title">Event Archive</h2>
+            <ul class="archive-list">
+                <li>2025 - Christmas Concert</li>
+                <li>2025 - Summer Festival</li>
+            </ul>
+        </div>
+    </section>
+
+    <footer id="footer-placeholder"></footer>
+
+    <!-- Info Modal -->
+    <div id="info-modal" class="modal hidden" aria-hidden="true">
+        <div class="modal-content">
+            <button class="modal-close" id="info-close">×</button>
+            <div id="info-body"></div>
+        </div>
+    </div>
+
+    <!-- Add / Edit Modal -->
+    <div id="form-modal" class="modal hidden" aria-hidden="true">
+        <div class="modal-content">
+            <button class="modal-close" id="form-close">×</button>
+            <h3 id="form-title">Add Concert</h3>
+            <form id="concert-form">
+                <label>Date (DD): <input name="day" required maxlength="2"></label>
+                <label>Month (e.g. FEB): <input name="month" required maxlength="4"></label>
+                <label>Time: <input name="time" required></label>
+                <label>Title: <input name="title" required></label>
+                <label>Location: <input name="location" required></label>
+                <label>Description: <textarea name="description"></textarea></label>
+                <div style="margin-top:12px; display:flex; gap:8px; justify-content:flex-end;">
+                    <button type="button" class="btn" id="form-cancel">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="form-save">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div id="login-modal" class="modal hidden" aria-hidden="true">
+        <div class="modal-content">
+            <button class="modal-close" id="login-close">×</button>
+            <h3 id="login-title">Admin Login</h3>
+            <p id="login-message">Please enter a password. If this is the first time, you'll create the admin password.</p>
+            <form id="login-form">
+                <label>Password: <input type="password" name="password" required></label>
+                <div style="margin-top:12px; display:flex; gap:8px; justify-content:flex-end;">
+                    <button type="button" class="btn" id="login-cancel">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Confirm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="translation.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
